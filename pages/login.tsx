@@ -2,10 +2,19 @@ import Head from "next/head";
 import Link from "next/link";
 import { IoLogoGoogle, IoLogoFacebook } from "react-icons/io";
 import { auth } from "../firebase";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { FormEvent } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { FormEvent, useEffect } from "react";
+import { useAuthContext } from "@/contexts/authContext";
+import { useRouter } from "next/router";
 
 const Login = () => {
+  const router = useRouter();
+  const { currentUser, isLoading } = useAuthContext();
+
+  useEffect(() => {
+    if (!isLoading && currentUser) router.push("/");
+  }, [currentUser, isLoading]);
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -20,7 +29,9 @@ const Login = () => {
       });
   };
 
-  return (
+  return isLoading || (!isLoading && currentUser) ? (
+    "Loading..."
+  ) : (
     <>
       <Head>
         <title>Login | Whassup</title>
