@@ -1,5 +1,5 @@
 import { auth } from "@/firebase";
-import { User, onAuthStateChanged } from "firebase/auth";
+import { User, onAuthStateChanged, signOut } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface UserContextType {
@@ -7,6 +7,7 @@ interface UserContextType {
   setCurrentUser: any;
   isLoading: boolean;
   setIsLoading: any;
+  logOut: () => void;
 }
 
 interface UserContextProviderProps {
@@ -18,6 +19,16 @@ const UserContext = createContext({} as UserContextType);
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   const [currentUser, setCurrentUser] = useState<null | User>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const logOut = () => {
+    signOut(auth)
+      .then(() => {
+        setCurrentUser(null);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -43,6 +54,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         setCurrentUser,
         isLoading,
         setIsLoading,
+        logOut,
       }}
     >
       {children}
