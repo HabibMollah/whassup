@@ -1,8 +1,25 @@
 import Head from "next/head";
 import Link from "next/link";
 import { IoLogoGoogle, IoLogoFacebook } from "react-icons/io";
+import { auth } from "../firebase";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { FormEvent } from "react";
 
 const Login = () => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const email = form[0] as HTMLInputElement;
+    const password = form[1] as HTMLInputElement;
+    await signInWithEmailAndPassword(auth, email.value, password.value)
+      .then((userCredential) => {
+        console.log(userCredential);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <>
       <Head>
@@ -29,7 +46,7 @@ const Login = () => {
           <p className="my-4 font-semibold text-c3">- OR -</p>
         </div>
         <div className="flex flex-col">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-2">
               <label className="mb-1 ml-2 block text-c3" htmlFor="email">
                 Email
