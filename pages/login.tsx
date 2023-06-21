@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { IoLogoGoogle, IoLogoFacebook } from "react-icons/io";
-import { auth, googleProvider } from "../firebase";
+import { auth, facebookProvider, googleProvider } from "../firebase";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { FormEvent, useEffect } from "react";
 import { useAuthContext } from "@/contexts/authContext";
@@ -13,7 +13,7 @@ const Login = () => {
 
   useEffect(() => {
     if (!isLoading && currentUser) router.push("/");
-  }, [currentUser, isLoading]);
+  }, [currentUser, isLoading, router]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,7 +32,16 @@ const Login = () => {
   const handleSignInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleSignInWithFacebook = async () => {
+    try {
+      await signInWithPopup(auth, facebookProvider);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return isLoading || (!isLoading && currentUser) ? (
@@ -57,7 +66,10 @@ const Login = () => {
             </button>
           </div>
           <div className="rounded-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[1px]">
-            <button className="flex w-full gap-1 rounded-md bg-c5 p-4 font-bold">
+            <button
+              onClick={handleSignInWithFacebook}
+              className="flex w-full gap-1 rounded-md bg-c5 p-4 font-bold"
+            >
               <IoLogoFacebook size={24} /> Log in with Facebook
             </button>
           </div>
