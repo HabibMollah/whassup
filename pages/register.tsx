@@ -3,7 +3,7 @@ import { auth, googleProvider, facebookProvider } from "@/firebase";
 import { signInWithPopup } from "firebase/auth";
 import Head from "next/head";
 import Link from "next/link";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { IoLogoGoogle, IoLogoFacebook } from "react-icons/io";
 
