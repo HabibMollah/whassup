@@ -20,16 +20,6 @@ body {
   box-sizing: border-box;
 }
 
-/* input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #2e343d inset !important;
-}
-
-input:-webkit-autofill {
-  -webkit-text-fill-color: white !important;
-} */
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
   box-shadow: 0 0 0 1000px #2e343d inset;
