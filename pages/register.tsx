@@ -1,8 +1,34 @@
+import { useAuthContext } from "@/contexts/authContext";
+import { auth, googleProvider, facebookProvider } from "@/firebase";
+import { signInWithPopup } from "firebase/auth";
 import Head from "next/head";
 import Link from "next/link";
+import router, { useRouter } from "next/router";
+import { useEffect } from "react";
 import { IoLogoGoogle, IoLogoFacebook } from "react-icons/io";
 
 const Register = () => {
+  const router = useRouter();
+  const { currentUser, isLoading } = useAuthContext();
+
+  useEffect(() => {
+    if (!isLoading && currentUser) router.push("/");
+  }, [currentUser, isLoading, router]);
+
+  const handleSignInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleSignInWithFacebook = async () => {
+    try {
+      await signInWithPopup(auth, facebookProvider);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <Head>
@@ -15,12 +41,18 @@ const Register = () => {
         </div>
         <div className="mt-8 flex flex-col gap-2 md:flex-row">
           <div className="rounded-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[1px]">
-            <button className="flex w-full gap-1 rounded-md bg-c5 p-4 font-bold">
+            <button
+              onClick={handleSignInWithGoogle}
+              className="flex w-full gap-1 rounded-md bg-c5 p-4 font-bold"
+            >
               <IoLogoGoogle size={24} /> Sign up with Google
             </button>
           </div>
           <div className="rounded-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[1px]">
-            <button className="flex w-full gap-1 rounded-md bg-c5 p-4 font-bold">
+            <button
+              onClick={handleSignInWithFacebook}
+              className="flex w-full gap-1 rounded-md bg-c5 p-4 font-bold"
+            >
               <IoLogoFacebook size={24} /> Sign up with Facebook
             </button>
           </div>
