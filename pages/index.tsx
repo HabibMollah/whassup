@@ -8,7 +8,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!isLoading && !currentUser) router.push("/login");
-  }, [currentUser, isLoading]);
+  }, [currentUser, isLoading, router]);
 
   return (
     <div className="h-[100vh] bg-black">
