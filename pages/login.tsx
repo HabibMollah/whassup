@@ -60,16 +60,14 @@ const Login = () => {
           <div className="rounded-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[1px]">
             <button
               onClick={handleSignInWithGoogle}
-              className="flex w-full gap-1 rounded-md bg-c5 p-4 font-bold"
-            >
+              className="flex w-full gap-1 rounded-md bg-c5 p-4 font-bold">
               <IoLogoGoogle size={24} /> Log in with Google
             </button>
           </div>
           <div className="rounded-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-[1px]">
             <button
               onClick={handleSignInWithFacebook}
-              className="flex w-full gap-1 rounded-md bg-c5 p-4 font-bold"
-            >
+              className="flex w-full gap-1 rounded-md bg-c5 p-4 font-bold">
               <IoLogoFacebook size={24} /> Log in with Facebook
             </button>
           </div>
@@ -107,8 +105,7 @@ const Login = () => {
             <div className="mt-4">
               <button
                 type="submit"
-                className="mt-8 w-[280px] rounded-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-3 text-lg font-bold md:w-[466px]"
-              >
+                className="mt-8 w-[280px] rounded-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-3 text-lg font-bold md:w-[466px]">
                 Login
               </button>
             </div>
@@ -117,8 +114,7 @@ const Login = () => {
             Don&apos;t have an account?{" "}
             <Link
               className="text-center font-bold underline underline-offset-2 hover:text-white"
-              href="/register"
-            >
+              href="/register">
               Register now
             </Link>
           </p>
