@@ -2,14 +2,21 @@ import Head from "next/head";
 import Link from "next/link";
 import { IoLogoGoogle, IoLogoFacebook } from "react-icons/io";
 import { auth, facebookProvider, googleProvider } from "../firebase";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { FormEvent, useEffect } from "react";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import { FormEvent, useEffect, useState } from "react";
 import { useAuthContext } from "@/contexts/authContext";
 import { useRouter } from "next/router";
+import ToastMessage from "@/components/ToastMessage";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const router = useRouter();
   const { currentUser, isLoading } = useAuthContext();
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     if (!isLoading && currentUser) router.push("/");
@@ -44,6 +51,23 @@ const Login = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    try {
+      toast.promise(
+        async () => {
+          await sendPasswordResetEmail(auth, email);
+        },
+        {
+          pending: "Generating password reset link...",
+          success: "Password reset email sent!",
+          error: "You've entered an invalid email",
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return isLoading || (!isLoading && currentUser) ? (
     "Loading..."
   ) : (
@@ -52,6 +76,7 @@ const Login = () => {
         <title>Login | Whassup</title>
       </Head>
       <div className="flex h-[100vh] flex-col items-center justify-center bg-c0">
+        <ToastMessage />
         <div className="text-center">
           <div className="mb-3 text-4xl font-bold">Login to Your Account</div>
           <p className="text-c3">connect and chat with anyone, anywhere</p>
@@ -88,6 +113,8 @@ const Login = () => {
                 className="h-12 w-[280px] rounded-md bg-c5 px-4 md:w-[466px]"
                 type="email"
                 id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -102,7 +129,7 @@ const Login = () => {
               />
             </div>
             <div className="mt-2 text-end text-c3 underline underline-offset-2 hover:text-white">
-              <a href="">forgot password?</a>
+              <a onClick={handleForgotPassword}>forgot password?</a>
             </div>
             <div className="mt-4">
               <button
