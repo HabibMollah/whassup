@@ -26,6 +26,5 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "firebase.js"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "./pages/api/hello.ts"]
 }
