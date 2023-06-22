@@ -26,7 +26,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         setCurrentUser(null);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
