@@ -27,13 +27,11 @@ const Login = () => {
     const form = e.target as HTMLFormElement;
     const email = form[0] as HTMLInputElement;
     const password = form[1] as HTMLInputElement;
-    await signInWithEmailAndPassword(auth, email.value, password.value)
-      .then((userCredential) => {
-        console.log(userCredential);
-      })
-      .catch((error) => {
+    await signInWithEmailAndPassword(auth, email.value, password.value).catch(
+      (error) => {
         console.error(error);
-      });
+      }
+    );
   };
 
   const handleSignInWithGoogle = async () => {
@@ -69,7 +67,7 @@ const Login = () => {
   };
 
   return isLoading || (!isLoading && currentUser) ? (
-    "Loading..."
+    <p className="text-center text-5xl text-red-500">Loading...</p>
   ) : (
     <>
       <Head>
