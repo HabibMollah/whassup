@@ -1,10 +1,14 @@
 import { useAuthContext } from "@/contexts/authContext";
 import { auth, googleProvider, facebookProvider } from "@/firebase";
-import { signInWithPopup } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import { IoLogoGoogle, IoLogoFacebook } from "react-icons/io";
 
 const Register = () => {
@@ -14,6 +18,24 @@ const Register = () => {
   useEffect(() => {
     if (!isLoading && currentUser) router.push("/");
   }, [currentUser, isLoading, router]);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const displayName = form[0] as HTMLInputElement;
+    const email = form[1] as HTMLInputElement;
+    const password = form[2] as HTMLInputElement;
+    try {
+      const { user } = await signInWithEmailAndPassword(
+        auth,
+        email.value,
+        password.value
+      );
+      await updateProfile(user, { displayName: displayName.value });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleSignInWithGoogle = async () => {
     try {
@@ -29,7 +51,9 @@ const Register = () => {
       console.error(error);
     }
   };
-  return (
+  return isLoading || (!isLoading && currentUser) ? (
+    <p className="text-center text-5xl text-red-500">Loading...</p>
+  ) : (
     <>
       <Head>
         <title>Register | Whassup</title>
@@ -61,7 +85,7 @@ const Register = () => {
           <p className="my-4 font-semibold text-c3">- OR -</p>
         </div>
         <div className="flex flex-col">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-2">
               <label className="mb-1 ml-2 block text-c3" htmlFor="display-name">
                 Username
