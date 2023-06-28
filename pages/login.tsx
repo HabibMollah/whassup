@@ -19,7 +19,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    if (!isLoading && currentUser) router.push("/");
+    if (currentUser && !isLoading) router.push("/");
   }, [currentUser, isLoading, router]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -66,7 +66,7 @@ const Login = () => {
     }
   };
 
-  return isLoading || (!isLoading && currentUser) ? (
+  return isLoading ? (
     <p className="text-center text-5xl text-red-500">Loading...</p>
   ) : (
     <>

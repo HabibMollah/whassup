@@ -39,8 +39,8 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         setCurrentUser(null);
         return;
       } else {
-        setIsLoading(false);
         setCurrentUser(user);
+        setIsLoading(false);
       }
     });
 
