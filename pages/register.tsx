@@ -51,7 +51,7 @@ const Register = () => {
       console.error(error);
     }
   };
-  return isLoading || (!isLoading && currentUser) ? (
+  return isLoading ? (
     <p className="text-center text-5xl text-red-500">Loading...</p>
   ) : (
     <>

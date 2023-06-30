@@ -10,10 +10,9 @@ const Home = () => {
     if (!isLoading && !currentUser) router.push("/login");
   }, [currentUser, isLoading, router]);
 
-  if (isLoading)
-    return <p className=" bg-white text-9xl text-red-500">Loading</p>;
-
-  return (
+  return isLoading ? (
+    <p className="text-center text-5xl text-red-500">Loading...</p>
+  ) : (
     <div className="h-[100vh] bg-black">
       <button className="bg-slate-200 p-2 text-black" onClick={logOut}>
         Sign out
