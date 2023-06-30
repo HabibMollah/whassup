@@ -1,7 +1,7 @@
 import { useAuthContext } from "@/contexts/authContext";
 import { auth, googleProvider, facebookProvider } from "@/firebase";
 import {
-  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
@@ -26,12 +26,13 @@ const Register = () => {
     const email = form[1] as HTMLInputElement;
     const password = form[2] as HTMLInputElement;
     try {
-      const { user } = await signInWithEmailAndPassword(
+      const { user } = await createUserWithEmailAndPassword(
         auth,
         email.value,
         password.value
       );
       await updateProfile(user, { displayName: displayName.value });
+      console.log(user);
     } catch (error) {
       console.error(error);
     }
