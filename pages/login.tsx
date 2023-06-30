@@ -1,17 +1,20 @@
 import Head from "next/head";
 import Link from "next/link";
 import { IoLogoGoogle, IoLogoFacebook } from "react-icons/io";
-import { auth, facebookProvider, googleProvider } from "../firebase";
+import { auth, db, facebookProvider, googleProvider } from "../firebase";
 import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateProfile,
 } from "firebase/auth";
 import { FormEvent, useEffect, useState } from "react";
 import { useAuthContext } from "@/contexts/authContext";
 import { useRouter } from "next/router";
 import ToastMessage from "@/components/ToastMessage";
 import { toast } from "react-toastify";
+import { doc, setDoc } from "firebase/firestore";
+import { profileColors, randomIndex } from "@/utils/profileColors";
 
 const Login = () => {
   const router = useRouter();
@@ -27,16 +30,29 @@ const Login = () => {
     const form = e.target as HTMLFormElement;
     const email = form[0] as HTMLInputElement;
     const password = form[1] as HTMLInputElement;
-    await signInWithEmailAndPassword(auth, email.value, password.value).catch(
-      (error) => {
-        console.error(error);
-      }
-    );
+    try {
+      const { user } = await signInWithEmailAndPassword(
+        auth,
+        email.value,
+        password.value
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSignInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const { user } = await signInWithPopup(auth, googleProvider);
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        profileColor: profileColors[randomIndex],
+      });
+      await setDoc(doc(db, "userChat", user.uid), {});
+
+      await updateProfile(user, { displayName: user.displayName });
     } catch (error) {
       console.error(error);
     }

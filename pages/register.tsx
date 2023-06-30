@@ -1,10 +1,12 @@
 import { useAuthContext } from "@/contexts/authContext";
-import { auth, googleProvider, facebookProvider } from "@/firebase";
+import { auth, googleProvider, facebookProvider, db } from "@/firebase";
+import { profileColors, randomIndex } from "@/utils/profileColors";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -31,8 +33,17 @@ const Register = () => {
         email.value,
         password.value
       );
+
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        email: email.value,
+        displayName: displayName.value,
+        profileColor: profileColors[randomIndex],
+      });
+      await setDoc(doc(db, "userChat", user.uid), {});
+
       await updateProfile(user, { displayName: displayName.value });
-      console.log(user);
+      router.push("/");
     } catch (error) {
       console.error(error);
     }

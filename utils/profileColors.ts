@@ -15,3 +15,5 @@ export const profileColors = [
   "#FFE5A5",
   "#CD413C",
 ];
+
+export const randomIndex = Math.floor(Math.random() * profileColors.length);
