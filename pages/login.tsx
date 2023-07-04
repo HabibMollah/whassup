@@ -31,11 +31,7 @@ const Login = () => {
     const email = form[0] as HTMLInputElement;
     const password = form[1] as HTMLInputElement;
     try {
-      const { user } = await signInWithEmailAndPassword(
-        auth,
-        email.value,
-        password.value
-      );
+      await signInWithEmailAndPassword(auth, email.value, password.value);
     } catch (error) {
       console.error(error);
     }
